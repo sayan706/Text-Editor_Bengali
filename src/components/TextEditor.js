@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import { Editor, EditorState, RichUtils } from "draft-js";
+import { Editor, EditorState, RichUtils, Modifier } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "./TextEditor.css"; // Import CSS file
 
-const TextEditor = ({
-  textColor,
-  setTextColor,
-  setEditorState,
-  editorState,
-}) => {
+const TextEditor = ({ editorState, setEditorState }) => {
+  const [textColor, setTextColor] = useState("#000000");
+
   const handleKeyCommand = (command, editorState) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
@@ -22,6 +19,26 @@ const TextEditor = ({
     setEditorState(RichUtils.toggleInlineStyle(editorState, style));
   };
 
+  const applyTextColor = (color) => {
+    const selection = editorState.getSelection();
+    if (selection.isCollapsed()) return; // Prevent applying color if no text is selected
+
+    const contentState = editorState.getCurrentContent();
+    const newContentState = Modifier.applyInlineStyle(
+      contentState,
+      selection,
+      `COLOR-${color}`
+    );
+
+    const newEditorState = EditorState.push(
+      editorState,
+      newContentState,
+      "change-inline-style"
+    );
+    setEditorState(newEditorState);
+    setTextColor(color);
+  };
+
   return (
     <div className="editor-container">
       <h2>Bangla & English Text Formatter</h2>
@@ -33,19 +50,22 @@ const TextEditor = ({
         <button onClick={() => toggleInlineStyle("UNDERLINE")}>
           Underline
         </button>
-        <input type="color" onChange={(e) => setTextColor(e.target.value)} />
+        <input
+          type="color"
+          value={textColor}
+          onChange={(e) => applyTextColor(e.target.value)}
+        />
       </div>
 
       {/* Editor */}
-      <div
-        className="editor-box"
-        style={{ color: textColor }}
-        onClick={() => setEditorState(EditorState.moveFocusToEnd(editorState))}
-      >
+      <div className="editor-box">
         <Editor
           editorState={editorState}
           handleKeyCommand={handleKeyCommand}
           onChange={setEditorState}
+          customStyleMap={{
+            [`COLOR-${textColor}`]: { color: textColor },
+          }}
         />
       </div>
     </div>

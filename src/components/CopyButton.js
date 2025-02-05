@@ -1,16 +1,15 @@
 import React from "react";
-import { EditorState, convertToRaw } from "draft-js";
+import { convertToRaw } from "draft-js"; // Removed unused EditorState
 
 const CopyButton = ({ editorState }) => {
   const handleCopy = () => {
+    if (!editorState) return;
+
     const contentState = editorState.getCurrentContent();
     const rawContent = convertToRaw(contentState);
 
     // Extract text while preserving inline styles
-    let formattedText = "";
-    rawContent.blocks.forEach((block) => {
-      formattedText += block.text + "\n"; // Add line breaks for readability
-    });
+    let formattedText = rawContent.blocks.map((block) => block.text).join("\n");
 
     // Copy text to clipboard
     navigator.clipboard
