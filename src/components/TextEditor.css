@@ -43,10 +43,38 @@ h2 {
   border: none;
 }
 
+.toolbar select {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 /* Editor Box */
 .editor-box {
   min-height: 200px;
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 5px;
+  font-family: inherit;
 }
+
+/* Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali&display=swap');
+
+@font-face {
+  font-family: 'Kalpurush';
+  src: url('../assests/kalpurush.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'BenSenHandwriting';
+  src: url('../assests/BenSenHandwriting.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'mitra';
+  src: url('../assests/mitra.ttf') format('truetype');
+}
+

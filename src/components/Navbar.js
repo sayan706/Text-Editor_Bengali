@@ -15,11 +15,6 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
           <li>
-            <a href="#features" onClick={() => setMenuOpen(false)}>
-              Features
-            </a>
-          </li>
-          <li>
             <a href="#about" onClick={() => setMenuOpen(false)}>
               About
             </a>
